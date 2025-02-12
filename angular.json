@@ -32,9 +32,21 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/prismjs/themes/prism-okaidia.css",
+              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/components/prism-csharp.min.js",
+              "node_modules/prismjs/components/prism-css.min.js",
+              "node_modules/prismjs/plugins/show-language/prism-show-language.js",
+              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js",
+              "node_modules/prismjs/plugins/show-language/prism-show-language.js",
+              "node_modules/prismjs/plugins/command-line/prism-command-line.js",
+              "node_modules/clipboard/dist/clipboard.min.js",
+              "node_modules/prismjs/components/prism-sql.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -98,5 +110,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

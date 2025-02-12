@@ -1,0 +1,58 @@
+<!--<div [ngClass]="{'main-container': loader(), 'operation-container': !loader()}">-->
+<div class="main-container" [ngClass]="{'flex-center': loader(), '': !loader()}">
+  <!--  <div *ngIf="!loader()" [ngClass]="{'left': !loader()}">-->
+  <!--    <div class="model-container" #dmnRef style="width: 100%; height: 80vh;" [ngClass]="{'overlay': generating()}">-->
+  <!--      <div *ngIf="generating()" class="loader"></div>-->
+  <!--      <div class="text-right edit">-->
+  <!--        <mat-icon mat-ripple class="rounded-circle">-->
+  <!--            <span class="material-symbols-outlined">-->
+  <!--            draw-->
+  <!--            </span>-->
+  <!--        </mat-icon>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <h1 *ngIf="loader() else welcome"> What can I help you with?</h1>
+  <ng-template #welcome>
+    <h1>BracIT SQL AI Generator</h1>
+  </ng-template>
+  <div class="content">
+    <div #chatContainer class="chat-container scrollable-container" *ngIf="chatHistory().length">
+      <ul class="chat-list">
+        @for (chat of chatHistory(); track chat) {
+          <li *ngIf="chat.context" class="chat-bubble">
+            {{ chat.context }}
+          </li>
+          <li *ngIf="chat.response" class="chat-bubble-response">
+<!--            <markdown lineNumbers lineHighlight commandLine clipboard [data]="chat.response">-->
+<!--            </markdown>-->
+<!--            -->
+            <markdown ngPreserveWhitespaces lineNumbers lineHighlight clipboard>
+              {{ chat.response }}
+            </markdown>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <div class="search-bar">
+      <textarea [disabled]="generating()" class="scrollable-container" [autofocus]="true" #textArea [(ngModel)]="prompt" placeholder="Type your message..."
+                (keydown.enter)="onEnter($event)"></textarea>
+      <span class="mic-icon">
+          <mat-icon *ngIf="!generating()" mat-ripple class="rounded-circle">
+            <span *ngIf="!prompt" (click)="onListen()" class="material-symbols-outlined">
+            mic
+            </span>
+            <span *ngIf="prompt" (click)="onSubmit()" class="material-symbols-outlined">
+            arrow_upward
+            </span>
+          </mat-icon>
+      <mat-icon *ngIf="generating()" mat-ripple class="rounded-circle">
+            <span class="material-symbols-outlined">
+            stop
+            </span>
+          </mat-icon>
+    </span>
+    </div>
+  </div>
+</div>

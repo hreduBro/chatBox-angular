@@ -19,6 +19,7 @@ import {MatRadioModule} from "@angular/material/radio";
 import {NgClass, NgIf} from "@angular/common";
 import {MatRipple} from "@angular/material/core";
 import {MarkdownModule, MarkdownService} from 'ngx-markdown';
+import {LandingService} from './landing.service';
 
 
 declare var webkitSpeechRecognition: any;
@@ -59,7 +60,8 @@ export class LandingComponent implements OnInit {
 
   constructor(
     private ngZone: NgZone,
-    public cdr: ChangeDetectorRef
+    public cdr: ChangeDetectorRef,
+    private responseService: LandingService
   ) {
     this.initializeSpeechRecognition();
   }
@@ -111,6 +113,7 @@ export class LandingComponent implements OnInit {
 
   onSubmit() {
     this.loader.set(false)
+    const tempPromt= this.prompt
     let obj = {context: this.prompt}
     this.history.push(obj)
     this.prompt = null
@@ -118,36 +121,49 @@ export class LandingComponent implements OnInit {
     this.textArea.nativeElement.blur();
     this.textArea.nativeElement.disabled;
     this.generating.set(true);
-    setTimeout(() => {
-      let obj = {
-        response: `# Sample Markdown
 
-### Code Example (SQL)
-\`\`\`sql
-CREATE TABLE Users (
-    id INT PRIMARY KEY,
-    name VARCHAR(100),
-    email VARCHAR(100) UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    this.responseService.getResponse(tempPromt).subscribe((res: any) => {
+      let obj = {response: JSON.parse(res.bpmnXml).sql.replace(/\\n/g, '\n').replace(/\\/g, '')}
 
-INSERT INTO Users (id, name, email) VALUES (1, 'John Doe', 'john@example.com');
-SELECT * FROM Users;
-\`\`\`
-
-### Table Example
-
-| ID  | Name     | Email             | Created At          |
-| --- | -------- | ---------------- | ------------------- |
-| 1   | John Doe | john@example.com | 2024-02-13 12:00:00 |
-`
-      };
+      debugger
       this.history.push(obj)
       this.chatHistory.set(this.history)
       this.generating.set(false);
       this.textArea.nativeElement.focus();
       requestAnimationFrame(() => this.scrollToBottom());
-    }, 2000);
+    });
+
+
+//     setTimeout(() => {
+//       let obj = {
+//         response: `# Sample Markdown
+//
+// ### Code Example (SQL)
+// \`\`\`sql
+// CREATE TABLE Users (
+//     id INT PRIMARY KEY,
+//     name VARCHAR(100),
+//     email VARCHAR(100) UNIQUE,
+//     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+// );
+//
+// INSERT INTO Users (id, name, email) VALUES (1, 'John Doe', 'john@example.com');
+// SELECT * FROM Users;
+// \`\`\`
+//
+// ### Table Example
+//
+// | ID  | Name     | Email             | Created At          |
+// | --- | -------- | ---------------- | ------------------- |
+// | 1   | John Doe | john@example.com | 2024-02-13 12:00:00 |
+// `
+//       };
+//       this.history.push(obj)
+//       this.chatHistory.set(this.history)
+//       this.generating.set(false);
+//       this.textArea.nativeElement.focus();
+//       requestAnimationFrame(() => this.scrollToBottom());
+//     }, 2000);
   }
 
 

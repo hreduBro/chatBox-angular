@@ -122,15 +122,20 @@ export class LandingComponent implements OnInit {
     this.textArea.nativeElement.disabled;
     this.generating.set(true);
 
-    this.responseService.getResponse(tempPromt).subscribe((res: any) => {
-      let obj = {response: JSON.parse(res.bpmnXml).sql.replace(/\\n/g, '\n').replace(/\\/g, '')}
 
-      debugger
-      this.history.push(obj)
-      this.chatHistory.set(this.history)
-      this.generating.set(false);
-      this.textArea.nativeElement.focus();
-      requestAnimationFrame(() => this.scrollToBottom());
+    this.responseService.getResponse(tempPromt).subscribe({
+      next: (res: any) => {
+        let obj = { response: res.bpmnXml };
+        this.history.push(obj);
+        this.chatHistory.set(this.history);
+        this.generating.set(false);
+        this.textArea.nativeElement.focus();
+        requestAnimationFrame(() => this.scrollToBottom());
+      },
+      error: (err) => {
+        console.error('Error occurred:', err);
+        this.generating.set(false);
+      }
     });
 
 

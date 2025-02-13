@@ -24,14 +24,17 @@
             {{ chat.context }}
           </li>
           <li *ngIf="chat.response" class="chat-bubble-response">
-<!--            <markdown lineNumbers lineHighlight commandLine clipboard [data]="chat.response">-->
-<!--            </markdown>-->
-<!--            -->
-            <markdown ngPreserveWhitespaces lineNumbers lineHighlight clipboard>
+            <markdown ngPreserveWhitespaces lineNumbers lineHighlight clipboard markdown>
               {{ chat.response }}
             </markdown>
           </li>
         }
+
+        <li *ngIf="generating()" class="chat-bubble-loader">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </li>
       </ul>
     </div>
 

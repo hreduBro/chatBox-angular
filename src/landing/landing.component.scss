@@ -145,6 +145,16 @@
   align-self: flex-start;
 }
 
+.chat-bubble-loader {
+  background-color: #f1f1f1; /* Blue background like chat messages */
+  color: black;
+  padding: 10px 15px;
+  border-radius: 15px;
+  word-wrap: break-word;
+  margin-bottom: 8px;
+  align-self: flex-start;
+}
+
 
 .loader {
   width: 50px;
@@ -206,4 +216,43 @@ th, td {
 th {
   background-color: #f4f4f4;
   font-weight: bold;
+}
+
+
+.chat-bubble-loader {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: #555;
+  border-radius: 50%;
+  animation: typing 1.2s infinite;
+}
+
+.dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0% {
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
 }

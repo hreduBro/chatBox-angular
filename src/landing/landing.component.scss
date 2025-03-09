@@ -135,7 +135,6 @@
 }
 
 .chat-bubble-response {
-  background-color: #f1f1f1; /* Blue background like chat messages */
   color: black;
   padding: 10px 15px;
   border-radius: 15px;
@@ -279,4 +278,61 @@ th {
 
 .header{
   color: #092c58;
+}
+
+.markdown-clipboard-button {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.15);
+  font-size: 14px;
+}
+
+.markdown-clipboard-button::before {
+  content: "Copy";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out;
+  white-space: nowrap;
+}
+
+.markdown-clipboard-button:hover {
+  background-color: #f9f9f9;
+  border-color: #ccc;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.markdown-clipboard-button:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.markdown-clipboard-button:active {
+  transform: scale(0.95);
+}
+
+.markdown-clipboard-button.copied {
+  background-color: #4caf50;
+  color: white;
+  border-color: #4caf50;
+}
+
+pre{
+  border-radius: 10px;
 }

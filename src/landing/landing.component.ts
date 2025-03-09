@@ -49,7 +49,7 @@ declare var webkitSpeechRecognition: any;
 })
 export class LandingComponent implements OnInit {
   @ViewChild('textArea') textArea!: ElementRef<HTMLTextAreaElement>;
-  @ViewChild('chatContainer') chatContainer!: ElementRef;
+  chatContainer: any;
 
   public chatHistory: WritableSignal<any[]> = signal([]);
   public loader: WritableSignal<boolean> = signal(true);
@@ -58,6 +58,30 @@ export class LandingComponent implements OnInit {
   prompt: string | any;
   recognition: any;
   showSuggestions = false;
+
+  obj = {
+    response: `# Sample Markdown
+
+### Code Example (SQL)
+\`\`\`sql
+CREATE TABLE Users (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO Users (id, name, email) VALUES (1, 'John Doe', 'john@example.com');
+SELECT * FROM Users;
+\`\`\`
+
+### Table Example
+
+| ID  | Name     | Email             | Created At          |
+| --- | -------- | ---------------- | ------------------- |
+| 1   | John Doe | john@example.com | 2024-02-13 12:00:00 |
+`
+  };
 
   constructor(
     private ngZone: NgZone,
@@ -132,9 +156,8 @@ export class LandingComponent implements OnInit {
     this.chatHistory.set(this.history)
     this.textArea.nativeElement.blur();
     this.textArea.nativeElement.disabled;
+    this.scrollToBottom()
     this.generating.set(true);
-
-
     this.responseService.getResponse(tempPromt).subscribe({
       next: (res: any) => {
         let obj = {response: res};
@@ -142,52 +165,23 @@ export class LandingComponent implements OnInit {
         this.chatHistory.set(this.history);
         this.generating.set(false);
         this.textArea.nativeElement.focus();
-        requestAnimationFrame(() => this.scrollToBottom());
+        this.scrollToBottom()
       },
       error: (err) => {
         console.error('Error occurred:', err);
         this.generating.set(false);
       }
     });
-
-
-//     setTimeout(() => {
-//       let obj = {
-//         response: `# Sample Markdown
-//
-// ### Code Example (SQL)
-// \`\`\`sql
-// CREATE TABLE Users (
-//     id INT PRIMARY KEY,
-//     name VARCHAR(100),
-//     email VARCHAR(100) UNIQUE,
-//     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-// );
-//
-// INSERT INTO Users (id, name, email) VALUES (1, 'John Doe', 'john@example.com');
-// SELECT * FROM Users;
-// \`\`\`
-//
-// ### Table Example
-//
-// | ID  | Name     | Email             | Created At          |
-// | --- | -------- | ---------------- | ------------------- |
-// | 1   | John Doe | john@example.com | 2024-02-13 12:00:00 |
-// `
-//       };
-//       this.history.push(obj)
-//       this.chatHistory.set(this.history)
-//       this.generating.set(false);
-//       this.textArea.nativeElement.focus();
-//       requestAnimationFrame(() => this.scrollToBottom());
-//     }, 2000);
   }
 
 
   scrollToBottom() {
-    if (this.chatContainer) {
-      this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
-    }
+    setTimeout(() => {
+      this.chatContainer = document.querySelector('#chatContainer')
+      if (this.chatContainer) {
+        this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
+      }
+    }, 100);
   }
 
   onInput(event: any) {

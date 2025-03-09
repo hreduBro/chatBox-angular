@@ -6,7 +6,7 @@
   </ng-template>
   <div class="content">
 
-    <div #chatContainer class="chat-container scrollable-container" *ngIf="chatHistory().length">
+    <div id="chatContainer" class="chat-container scrollable-container" *ngIf="chatHistory().length">
       <ul class="chat-list">
         @for (chat of chatHistory(); track chat) {
           <li *ngIf="chat.context" class="chat-bubble">

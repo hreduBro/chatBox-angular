@@ -38,7 +38,7 @@ declare var webkitSpeechRecognition: any;
     NgIf,
     NgClass,
     MatRipple,
-    MarkdownModule
+    MarkdownModule,
   ],
   providers: [
     MarkdownService,
@@ -57,6 +57,7 @@ export class LandingComponent implements OnInit {
   history: any[] = []
   prompt: string | any;
   recognition: any;
+  showSuggestions = false;
 
   constructor(
     private ngZone: NgZone,
@@ -104,16 +105,27 @@ export class LandingComponent implements OnInit {
     }
   }
 
-  onEnter(event: KeyboardEvent | any) {
-    if (!event.shiftKey && !this.generating()) {
+  onEnter(event: any) {
+    if (this.showSuggestions) {
+      event.preventDefault(); // Prevents new line or form submission
+      this.addTag('@sql'); // Auto-insert the tag
+    } else if (!event.shiftKey && !this.generating()) {
       event.preventDefault(); // Prevents new line
-      this.onSubmit();
+      this.onSubmit(); // Submit message
     }
   }
 
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter' && this.showSuggestions) {
+      event.preventDefault(); // Prevent new line when selecting a tag
+      this.addTag('@sql');
+    }
+  }
+
+
   onSubmit() {
     this.loader.set(false)
-    const tempPromt= this.prompt
+    const tempPromt = this.prompt
     let obj = {context: this.prompt}
     this.history.push(obj)
     this.prompt = null
@@ -125,7 +137,7 @@ export class LandingComponent implements OnInit {
 
     this.responseService.getResponse(tempPromt).subscribe({
       next: (res: any) => {
-        let obj = { response: res.bpmnXml };
+        let obj = {response: res};
         this.history.push(obj);
         this.chatHistory.set(this.history);
         this.generating.set(false);
@@ -176,6 +188,20 @@ export class LandingComponent implements OnInit {
     if (this.chatContainer) {
       this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
     }
+  }
+
+  onInput(event: any) {
+    const value = event.target.value;
+    this.showSuggestions = value.includes('@'); // Show suggestions when '@' is typed
+  }
+
+  addTag(tag: string) {
+    const cursorPos = this.textArea.nativeElement.selectionStart;
+    const textBefore = this.prompt.substring(0, cursorPos);
+    const textAfter = this.prompt.substring(cursorPos);
+
+    this.prompt = textBefore.replace(/@\S*$/, '') + tag + ' ' + textAfter; // Replace `@` with tag
+    this.showSuggestions = false;
   }
 
 }

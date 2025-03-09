@@ -256,3 +256,27 @@ th {
     opacity: 0.2;
   }
 }
+
+.suggestion-box {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  list-style: none;
+  padding: 5px;
+  margin: 0;
+  width: 100px;
+}
+
+.suggestion-box li {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.suggestion-box li:hover {
+  background: #f0f0f0;
+}
+
+
+.header{
+  color: #092c58;
+}

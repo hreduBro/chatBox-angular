@@ -208,7 +208,7 @@ table {
   display: block;
   overflow-x: auto; /* Horizontal scrolling */
   overflow-y: auto; /* Vertical scrolling */
-  height: 350px; /* Set a height to enable vertical scrolling */
+  height: fit-content; /* Set a height to enable vertical scrolling */
 }
 
 th, td {

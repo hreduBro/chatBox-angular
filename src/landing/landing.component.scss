@@ -122,7 +122,7 @@
 
 .chat-bubble {
   background-color: #f1f1f1; /* Blue background like chat messages */
-  color: black;
+  color: #092c58;
   padding: 10px 15px;
   border-radius: 15px;
   width: fit-content;
@@ -135,7 +135,7 @@
 }
 
 .chat-bubble-response {
-  color: black;
+  color: #092c58;
   padding: 10px 15px;
   border-radius: 15px;
   word-wrap: break-word;
@@ -202,8 +202,13 @@
 table {
   border-collapse: collapse;
   margin: 20px 0;
-  font-size: 18px;
-  text-align: left;
+  font-size: 15px;
+  text-align: center;
+  width: 100%; /* Fixed width */
+  display: block;
+  overflow-x: auto; /* Horizontal scrolling */
+  overflow-y: auto; /* Vertical scrolling */
+  height: 350px; /* Set a height to enable vertical scrolling */
 }
 
 th, td {
